@@ -14,7 +14,7 @@ const BlogDetails = () => {
 		fetch(`/admin/blogs/${id}`, {
 			method: "DELETE",
 		}).then(() => {
-			navigate("/announcements");
+			navigate("/blogs");
             console.log(id + "deleted")
 		});
 	};

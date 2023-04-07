@@ -1,33 +1,43 @@
-const mongoose= require('mongoose');
-const Schema= mongoose.Schema; 
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const CourseSchema=new Schema({
-    title:{
-        type: String,
-        required: true
-    },
-    description:{
-        type:String,
-        required: true
-    },
-    price:{
-        type:Number,
-        required: true,
-    },
-    courseType:{
-        type:String,
-        required: true,
-    },
-    instructor:{
-       type:String,
-       required:true,
-    },
-    offered_by:{
-        type:String,
-        required: true,
-    },
-    images: String
+const CourseSchema = new Schema({
+	title: {
+		type: String,
+		required: true,
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+	},
+	courseType: {
+		type: String,
+		required: true,
+	},
+	instructor: {
+		type: String,
+		required: true,
+	},
+	offered_by: {
+		type: String,
+		required: true,
+	},
+	images: String,
+	course_likes: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "User",
+		},
+	],
+	likes_count: { type: Number, default: 0 },
+});
 
+// CourseSchema.virtual("likes_count").get(function () {
+// 	return this.course_likes.length;
+// });
 
-})
-module.exports= mongoose.model('Course', CourseSchema);
+module.exports = mongoose.model("Course", CourseSchema);

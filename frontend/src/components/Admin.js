@@ -26,7 +26,7 @@ const Admin = () => {
 		}).then(() => {
 			console.log("new blog added");
 			setIsPending(false);
-			navigate("/announcements");
+			navigate("/blogs");
 		});
 	};
 	return (

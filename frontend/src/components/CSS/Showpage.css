@@ -1,0 +1,135 @@
+.left_wrap {
+    border: 1px solid indigo;
+    width: 700px;
+    height: 1000px;
+    float: left;
+}
+
+.right_wrap {
+    border: 1px solid indigo;
+    width: 550px;
+    height: 1000px;
+    float: left;
+}
+
+/* .left1,
+.left2 {
+    float: left;
+    width: 49%;
+    border: 1px solid #000;
+    height: 40px;
+}
+
+.right1,
+.right2 {
+    border: 1px solid #000;
+    height: 80px;
+} */
+
+.cont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+}
+
+.card1 {
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    width: 40rem;
+    max-width: 100%;
+}
+
+.left_wrap h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.left_wrap h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.left_wrap p {
+    margin-bottom: 1rem;
+}
+
+.left_wrap a {
+    color: #0099cc;
+    text-decoration: none;
+}
+
+.left_wrap a:hover {
+    text-decoration: underline;
+}
+
+.com1 {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.com1 label {
+    text-align: left;
+    display: block;
+}
+
+.com1 h2 {
+    font-size: 30px;
+    color: black;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    font-weight: semibold;
+    font-family: serif;
+    text-align: left;
+
+}
+
+.com input,
+.com1 textarea,
+.com1 select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid indigo;
+    box-sizing: border-box;
+    display: block;
+}
+
+.com1 button {
+
+    color: #ddd;
+    border: 0;
+    padding-right: 145px;
+    padding-left: 145px;
+    border-radius: 8px;
+    cursor: pointer;
+    justify-self: center;
+    align-items: center;
+
+}
+
+.btn-grad1 {
+    background-color: #0099cc;
+    padding: 5px 10px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 100% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+    margin-left: 5px;
+}
+
+.btn-grad1:hover {
+    background-position: right center;
+    /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}

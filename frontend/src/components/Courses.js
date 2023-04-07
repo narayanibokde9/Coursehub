@@ -9,6 +9,8 @@ function Courses() {
 			.then((jsonRes) => setCourse(jsonRes));
 	}, []);
 
+	console.log(course)
+
 	return (
 		<div>
 			<div class="card-header align-text-center">

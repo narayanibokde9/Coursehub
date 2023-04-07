@@ -10,6 +10,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -22,6 +24,11 @@ const Item = styled(Paper)(({ theme }) => ({
 function FormRow() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [course, setCourse] = useState([]);
+	const [likes, setLikes] = useState()
+
+	const { user } = useAuthContext();
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetch(`/courses`)
@@ -32,6 +39,32 @@ function FormRow() {
 			});
 	}, []);
 
+	// const countLikes = async (_id) => {
+	// 	const res = await fetch(`/courses/${_id}/likesCount`);
+	// 	const jsonRes = await res.json();
+	// 	return jsonRes.likeCount;
+	// };
+
+	const handleClick = (course, likes_count) => {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		const { _id } = course;
+		setLikes(likes_count + 1);  
+		fetch(`/courses/${_id}/likes`, {
+			method: "PUT",
+			body: JSON.stringify(course),
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
+		}).then(() => {
+			// navigate("/wishlist");
+			console.log(_id + "liked");
+		});
+	};
+
 	if (isLoading) {
 		return <React.Fragment>Loading...</React.Fragment>;
 	}
@@ -40,6 +73,7 @@ function FormRow() {
 		<React.Fragment>
 			<Grid item xs={4}>
 				{course.map((course) => {
+					const url = `/showpage/${course._id}`
 					return (
 						<Item>
 							<Card sx={{ maxWidth: 345 }}>
@@ -57,12 +91,14 @@ function FormRow() {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<a href="/showpage">
+									<Link to={url}>
 										<Button size="small">Explore</Button>
-									</a>
-									<a href="#">
-										<Button size="small">Like</Button>
-									</a>
+									</Link>
+										<Button onClick={() => handleClick(course, course.likes_count)} size="small">
+											Likes 
+											{/* {setLikes(countLikes(course._id))} */}{" "}
+											{course.likes_count}
+										</Button>
 								</CardActions>
 							</Card>
 						</Item>

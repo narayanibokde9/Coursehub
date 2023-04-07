@@ -18,11 +18,12 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	// type: {
-	// 	type: String,
-	// 	enum: ["user", "admin"],
-	// 	default: "user",
-	// },
+	wishlist: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Course",
+		},
+	],
 });
 
 // // set the type attribute to "admin" if email ends with "@admin.com"

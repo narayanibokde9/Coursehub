@@ -1,5 +1,12 @@
-.disp1{display: flex; justify-content:flex-start; align-items: left; height: 100vh;
-font-family: Georgia, 'Times New Roman', Times, serif;}
+.disp1 {
+    display: flex;
+    ;
+    align-items: left;
+    height: 100vh;
+    line-height: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 .home {
     background-image: url('../Images/humans1.png');
     background-position: center;
@@ -9,13 +16,15 @@ font-family: Georgia, 'Times New Roman', Times, serif;}
     color: #fff;
 
 }
-.edu{
+
+.edu {
     margin-top: 20px;
     font-size: 20px;
-    margin-left: 20px;
+    margin-left: 5px;
 
 }
-.emp{
+
+.emp {
     margin-left: 20px;
     font-size: 50px;
 }

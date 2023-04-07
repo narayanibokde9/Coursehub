@@ -40,7 +40,7 @@ const Navbar = () => {
 								<Link to="/courses">Courses</Link>
 							</li>
 							<li class="md:px-4 md:py-2 hover:text-indigo-400">
-								<Link to="/announcements">Announcements</Link>
+								<Link to="/blogs">Announcements</Link>
 							</li>
 							<li class="md:px-4 md:py-2 hover:text-indigo-400">
 								<a href="#">About</a>

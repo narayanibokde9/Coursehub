@@ -1,5 +1,5 @@
-import React from 'react'
-import './CSS/Signup.css'
+import React from "react";
+import "./CSS/Signup.css";
 
 import { useSignup } from "../hooks/useSignup";
 import { useState } from "react";
