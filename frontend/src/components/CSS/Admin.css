@@ -1,0 +1,122 @@
+.events {
+    background-image: url('../Images/humans.png');
+    background-position: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    font-size: 100px;
+}
+
+.blog-preview {
+    padding: 10px 16px;
+    margin: 20px 0;
+    border-bottom: 1px solid #fafafa;
+}
+
+.blog-preview:hover {
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.blog-preview h1 {
+    font-size: 30px;
+    color: #6e6d6d;
+
+}
+
+.blog-preview h2 {
+    font-size: 20px;
+    color: #6e6d6d;
+    margin-bottom: 8px;
+}
+
+.blog-preview a {
+    text-decoration: none;
+}
+
+.blog-details h2 {
+    font-size: 20px;
+    color: #3F51B5;
+    margin-bottom: 10px;
+}
+
+.blog-details div {
+    margin: 20px 0;
+}
+
+.blog-details button {
+    background: #3F51B5;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.create {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.create label {
+    text-align: left;
+    display: block;
+}
+
+.create h2 {
+    font-size: 20px;
+    color: #3F51B5;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.create input,
+.create textarea,
+.create select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid indigo;
+    box-sizing: border-box;
+    display: block;
+}
+
+.create button {
+   
+    color: #ddd;
+    border: 0;
+    padding-right: 145px;
+    padding-left: 145px;
+    border-radius: 8px;
+    cursor: pointer;
+    justify-self: center;
+    align-items: center;
+}
+
+.complaint {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.btn-grad {
+    background-image: linear-gradient(to right, #4776E6 0%, #8E54E9 51%, #4776E6 100%);
+    margin: 10px;
+    padding: 10px 35px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 100% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-grad:hover {
+    background-position: right center;
+    /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}

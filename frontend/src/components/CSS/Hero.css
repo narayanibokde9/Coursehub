@@ -1,0 +1,21 @@
+.disp1{display: flex; justify-content:flex-start; align-items: left; height: 100vh;
+font-family: Georgia, 'Times New Roman', Times, serif;}
+.home {
+    background-image: url('../Images/humans1.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    color: #fff;
+
+}
+.edu{
+    margin-top: 20px;
+    font-size: 20px;
+    margin-left: 20px;
+
+}
+.emp{
+    margin-left: 20px;
+    font-size: 50px;
+}
