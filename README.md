@@ -1,7 +1,7 @@
 <h1 align="center">
  
   <br>
-  CODEHER-Womens Hackathon
+  CODHER-Womens Hackathon
 </h1>
 
 <div align="center">
