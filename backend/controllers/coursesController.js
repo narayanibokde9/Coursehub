@@ -34,7 +34,7 @@ module.exports.likes = async (req, res) => {
 };
 
 module.exports.addToWishlist = async (req, res) => {
-	const courseId = req.params.id;
+	const courseId = req.body._id;
 	const user = await User.findById(req.user._id);
 
 	if (user.wishlist.includes(courseId)) {
@@ -45,4 +45,12 @@ module.exports.addToWishlist = async (req, res) => {
 		});
 		console.log("success", "Course added to wishlist");
 	}
+};
+
+module.exports.getWishlist = async (req, res) => {
+	// const user = await User.findById(req.user._id);
+	const user = await User.findById(req.user._id).populate("wishlist");
+	if (!user) throw new Error("User not found");
+	console.log(user.wishlist);
+	return user.wishlist;
 };

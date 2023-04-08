@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import profilePic from "./Images/profile-pic.jpeg";
 import "./CSS/Profile.css";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const Profile = () => {
+	const [wishlist, setWishlist] = useState([]);
+
 	const { user } = useAuthContext();
+
+	useEffect(() => {
+		fetch(`/wishlist`, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((jsonRes) => {
+				setWishlist(jsonRes);
+				// setIsLoading(false);
+			});
+	}, []);
+
+	console.log(wishlist)
+
 	return (
 		<div className="profile">
 			<div class="card">
@@ -29,12 +48,17 @@ const Profile = () => {
 						</div>
 						<div class="following">
 							<h3>Wishlist</h3>
-							<br />
+							<ul>
+								{wishlist.map((wish) => {
+									return <li>{wish.title}</li>;
+								})}
+							</ul>
+							{/* <br />
 							<p>2</p>
 							<ul>
 								<li>CP</li>
 								<li>DMA</li>
-							</ul>
+							</ul> */}
 						</div>
 					</div>
 				</div>
