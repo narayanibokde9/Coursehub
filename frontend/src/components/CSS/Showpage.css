@@ -1,17 +1,18 @@
 .left_wrap {
     border: 1px solid indigo;
     width: 700px;
-    height: 1000px;
+    height: 1200px;
     float: left;
 }
 
 .right_wrap {
     border: 1px solid indigo;
     width: 550px;
-    height: 1000px;
+    height: 1200px;
     float: left;
 }
 
+input[type]
 /* .left1,
 .left2 {
     float: left;
@@ -132,4 +133,40 @@
     /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
+}
+
+.textp {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+
+}
+
+.textp textarea {
+    align-items: center;
+    width: 500px;
+    height: 100px;
+    border: #8E54E9;
+    border-radius: 10px;
+    margin-right: 50px;
+    margin-left: -50px;
+    align-self: center;
+}
+
+.textp button {
+    background-color: #0099cc;
+    /* margin: 10px; */
+    padding: 10px 35px;
+    /* text-align: center; */
+    /* align-self: center; */
+    /* align-items: center; */
+    /* text-transform: uppercase; */
+    /* transition: 0.5s; */
+    /* background-size: 100% auto; */
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    /* display: block; */
+
 }

@@ -34,6 +34,13 @@ const CourseSchema = new Schema({
 		},
 	],
 	likes_count: { type: Number, default: 0 },
+	comment: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Comment",
+		},
+	],
+	course_link: String,
 });
 
 // CourseSchema.virtual("likes_count").get(function () {

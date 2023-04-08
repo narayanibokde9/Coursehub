@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 module.exports.allCourse = (req, res) => {
 	Course.find({})
+		.sort({ likes_count: -1 })
 		.then((items) => res.json(items))
 		.catch((e) => console.log(e));
 };
@@ -53,4 +54,69 @@ module.exports.getWishlist = async (req, res) => {
 	if (!user) throw new Error("User not found");
 	console.log(user.wishlist);
 	return user.wishlist;
+};
+
+const Comment = require("../models/comment");
+
+module.exports.createComment = (req, res, next) => {
+	const comment = new Comment({
+		body: req.body.body,
+		// rating: req.body.rating,
+		author: req.user._id, // assuming you have the author's ID in the request body
+	});
+	comment
+		.save()
+		.then((commentResult) => {
+			Course.findByIdAndUpdate(
+				req.params.courseId, // assuming you have the course ID in the request parameters
+				{ $push: { comment: commentResult._id }, $inc: { comments_count: 1 } },
+				{ new: true }
+			)
+				.populate("comment") // optional: to include the comment details in the response
+				.exec()
+				.then((courseResult) => {
+					res.status(200).json({
+						message: "Comment added to course successfully",
+						course: courseResult,
+					});
+				})
+				.catch((error) => {
+					res.status(500).json({
+						error: error,
+					});
+				});
+		})
+		.catch((error) => {
+			res.status(500).json({
+				error: error,
+			});
+		});
+};
+
+exports.getAllCommentsForCourse = (req, res, next) => {
+	Course.findById(req.params._id) // assuming you have the course ID in the request parameters
+		.populate({
+			path: "comment",
+			select: "body",
+			populate: {
+				path: "author",
+				select: "username",
+			},
+		})
+		.exec()
+		.then((courseResult) => {
+			if (!courseResult) {
+				return res.status(404).json({
+					message: "Course not found",
+				});
+			}
+			res.status(200).json({
+				comments: courseResult.comment,
+			});
+		})
+		.catch((error) => {
+			res.status(500).json({
+				error: error,
+			});
+		});
 };

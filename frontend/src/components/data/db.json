@@ -1,31 +1,30 @@
 {
-  "blogs": [
-    {
-      "date": "2023-04-15",
-      "organiser": "",
-      "venue": "DevTown",
-      "start_time": "02:00",
-      "end_time": "",
-      "description": "DSA Workshop",
-      "id": 4
-    },
-    {
-      "date": "2023-04-23",
-      "organiser": "",
-      "venue": "Udemy",
-      "start_time": "10:00",
-      "end_time": "",
-      "description": "CP Workshop",
-      "id": 5
-    },
-    {
-      "date": "2023-04-13",
-      "organiser": "Paid",
-      "venue": "sdgsdtha",
-      "start_time": "22:29",
-      "end_time": "",
-      "description": "dsfja;'ge",
-      "id": 6
-    }
-  ]
+	"blogs": [
+		{
+			"date": "2023-04-15",
+			"organiser": "",
+			"venue": "DevTown",
+			"start_time": "02:00",
+			"end_time": "",
+			"description": "DSA Workshop",
+			"id": 4
+		},
+		{
+			"date": "2023-04-23",
+			"organiser": "",
+			"venue": "Udemy",
+			"start_time": "10:00",
+			"end_time": "",
+			"description": "CP Workshop",
+			"id": 5
+		}
+	],
+	"comments": [
+		{ "review": "wow,nice" },
+		{ "review": "Excellent" },
+		{ "review": "Amazing" },
+		{ "review": "Worth it" },
+		{ "review": "Devayani cool" },
+		{ "review": "Sakshi is nice" }
+	]
 }

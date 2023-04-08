@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 //import routes
 const userRoutes = require("./routes/users");
 const courseRoutes = require("./routes/courses");
-const blogRoutes = require("./routes/blogs")
+const blogRoutes = require("./routes/blogs");
+// const commentRoutes = require("./routes/comments");
 
 // const favoriteRoutes = require("./routes/favorites");
 // const productRoutes = require("./routes/products");
@@ -30,8 +31,9 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/website/user", userRoutes);
+// app.use("/courses/:id/reviews", commentRoutes);
 app.use("/courses", courseRoutes);
-app.use("/admin", blogRoutes)
+app.use("/admin", blogRoutes);
 
 // app.use("/products", productRoutes);
 // app.use("/user", favoriteRoutes);

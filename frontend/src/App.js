@@ -12,12 +12,15 @@ import Hero from "./components/Hero";
 import Admin from "./components/Admin";
 import BlogDetails from "./components/BlogDetails";
 import Announcements from "./components/Announcements";
+import Search from "./components/Search";
 
 import { useAuthContext } from "./hooks/useAuthContext";
 import Courses from "./components/CoursesPage";
-import BlogList from "./components/BlogList";
+import BlogList from "./components/BlogList"
 import Showpage from "./components/Showpage";
 import Profile from "./components/Profile";
+// import CommentList from "./components/CommentList";
+import Comments from "./components/Comments";
 
 function App() {
 	const { user } = useAuthContext();
@@ -43,6 +46,8 @@ function App() {
 					<Route path="/announcements" element={<Announcements />} />
 					<Route path="/courses" element={<Courses />} />
 					<Route path="/profile" element={<Profile />} />
+					<Route path="/comments" element={<Comments />} />
+					<Route path="/search" element={<Search />} />
 				</Routes>
 			</Router>
 		</div>

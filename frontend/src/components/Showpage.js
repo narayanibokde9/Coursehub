@@ -4,9 +4,18 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "./usefetch";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useMemo } from "react";
 import { CardMedia } from "@mui/material";
 
 const Showpage = () => {
+	const [ourText, setOurText] = useState("");
+	const msg = new SpeechSynthesisUtterance();
+
+	const speechHandler = (msg) => {
+		msg.text = course.description;
+		window.speechSynthesis.speak(msg);
+	};
+
 	const { id } = useParams();
 	const { user } = useAuthContext();
 
@@ -34,8 +43,8 @@ const Showpage = () => {
 			navigate("/login");
 			return;
 		}
-		const { _id } = course;
-		fetch(`/courses/${_id}/wishlist`, {
+		const { id } = course;
+		fetch(`/courses/${id}/wishlist`, {
 			method: "PUT",
 			body: JSON.stringify(course),
 			headers: {
@@ -44,9 +53,32 @@ const Showpage = () => {
 			},
 		}).then(() => {
 			// navigate("/wishlist");
-			console.log(_id + "wishlist");
+			console.log(id + "wishlist");
 		});
 	};
+
+	// const handleSubmit = (e) => {
+	// 	if (!user) {
+	// 		navigate("/login");
+	// 		return;
+	// 	}
+	// 	e.preventDefault();
+	// 	const comment = { review };
+	// 	setIsPending(true);
+
+	// 	// fetch(`/courses/comments/${id}/reviews`, {
+	// 	// 	method: "POST",
+	// 	// 	headers: {
+	// 	// 		"Content-Type": "application/json",
+	// 	// 		Authorization: `Bearer ${user.token}`,
+	// 	// 	},
+	// 	// 	body: JSON.stringify(comment),
+	// 	// }).then(() => {
+	// 	// 	console.log("new comment added");
+	// 	// 	setIsPending(false);
+	// 	// 	navigate(`/comments/${id}`);
+	// 	// });
+	// };
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -76,8 +108,9 @@ const Showpage = () => {
 						<br />
 						<p>{course.description}</p>
 						<p class="">{course.courseType}</p>
-						<a href={`Link1`}>Course link</a>
+						<a href={course.course_link}>Course link</a>
 						<button
+							className="btn-grad1"
 							onClick={() => {
 								addToWishList(course);
 							}}
@@ -86,7 +119,21 @@ const Showpage = () => {
 						</button>
 					</div>
 				</div>
+				<div className="App1">
+					<h1>Text to Speech!</h1>
+					<div className="textp">
+						<textarea
+							required
+							value={course.description}
+							placeholder="Enter Text"
+							onChange={(e) => setOurText(e.target.value)}
+						></textarea>
+						<br />
+						<button onClick={() => speechHandler(msg)}>SPEAK</button>
+					</div>
+				</div>
 			</div>
+
 			<div class="right_wrap">
 				<div className="com1">
 					<h2 class="text-left">Comments</h2>
