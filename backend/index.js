@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
 const courseRoutes = require("./routes/courses");
 const blogRoutes = require("./routes/blogs");
+const wishlistRoutes = require("./routes/wishlists");
+const commentRoutes = require("./routes/comments");
 // const commentRoutes = require("./routes/comments");
 
 // const favoriteRoutes = require("./routes/favorites");
@@ -34,6 +36,8 @@ app.use("/website/user", userRoutes);
 // app.use("/courses/:id/reviews", commentRoutes);
 app.use("/courses", courseRoutes);
 app.use("/admin", blogRoutes);
+app.use("/user", wishlistRoutes);
+app.use("/user", commentRoutes);
 
 // app.use("/products", productRoutes);
 // app.use("/user", favoriteRoutes);

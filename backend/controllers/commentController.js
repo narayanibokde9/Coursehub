@@ -1,13 +1,78 @@
-// const Course = require("../models/course");
-// const Comment = require("../models/comment");
+const Comment = require("../models/comment");
 
-// module.exports.createComment = async (req, res) => {
-// 	const course = await Course.findById(req.params.id);
-// 	const comment = new Comment(req.body.comment);
-// 	comment.author = req.user._id;
-// 	course.comment.push(comment);
-// 	await comment.save();
-// 	await course.save();
-// 	console.log("success", "Created new review!");
-// 	console.log(`/courses/${course._id}`);
-// };
+// Add a comment to a course by course ID
+const addComment = async (req, res) => {
+	try {
+		const { userId, text } = req.body;
+		const courseId = req.params.courseId;
+
+		if (!userId) {
+			return res.status(400).json({ error: "User ID is required" });
+		}
+
+		const newComment = new Comment({
+			user: userId,
+			course: courseId,
+			text: text,
+		});
+
+		await newComment.save();
+        console.log("post", newComment)
+		res
+			.status(201)
+			.json({ message: "Comment added successfully!", comment: newComment });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+// Get all comments for a specific course by course ID
+const getCommentsByCourseId = async (req, res) => {
+	try {
+		const courseId = req.params.courseId;
+		const comments = await Comment.find({ course: courseId }).populate("user");
+        console.log("get", comments)
+		res.json({ comments });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+// Get a comment by its ID
+const getCommentById = async (req, res) => {
+	try {
+		const commentId = req.params.commentId;
+		const comment = await Comment.findById(commentId).populate("user");
+
+		if (!comment) {
+			return res.status(404).json({ message: "Comment not found" });
+		}
+
+		res.json({ comment });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+// Delete a comment by its ID
+const deleteCommentById = async (req, res) => {
+	try {
+		const commentId = req.params.commentId;
+		const deletedComment = await Comment.findByIdAndDelete(commentId);
+
+		if (!deletedComment) {
+			return res.status(404).json({ message: "Comment not found" });
+		}
+
+		res.json({ message: "Comment deleted successfully" });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+module.exports = {
+	addComment,
+	getCommentsByCourseId,
+	getCommentById,
+	deleteCommentById,
+};

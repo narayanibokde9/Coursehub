@@ -16,7 +16,7 @@ const Profile = () => {
 			try {
 				if (!user) {
 					navigate("/login");
-					return;
+					return; 
 				}
 
 				const response = await fetch(`/user/wishlist/${user._id}`, {
