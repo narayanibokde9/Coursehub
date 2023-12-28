@@ -46,6 +46,11 @@ const Showpage = () => {
 			});
 	}, [id]);
 
+	function isValidDate(date) {
+  return date instanceof Date && !isNaN(date);
+}
+
+
 	const addToWishlist = (course) => {
 		if (!user) {
 			navigate("/login");
@@ -159,8 +164,12 @@ const Showpage = () => {
 						<ul>
 							{comments.map((comment) => (
 								<li key={comment._id}>
+									<div className="comment-box">
 									<p>{comment.text}</p>
+									<p className="timestamp">Posted at: {isValidDate(comment.postedAt) ? new Date(comment.postedAt).toLocaleString() : 'Invalid Date'}</p>
+
 									{/* Display other details of the comment */}
+									</div>
 								</li>
 							))}
 						</ul>

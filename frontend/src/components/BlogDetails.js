@@ -30,8 +30,8 @@ const BlogDetails = () => {
 			{isPending && <div>Loading...</div>}
 			{error && <div>{error}</div>}
 			{blog && (
-				<article>
-					<h2>Platform{blog.venue}</h2>
+				<article className="blog-details-content">
+					<h2>Platform: {blog.venue}</h2>
 					<p>
 						Is this course paid or free?
 						<br />

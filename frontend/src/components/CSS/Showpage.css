@@ -170,3 +170,30 @@ input[type]
     /* display: block; */
 
 }
+
+/* Add this to your "Showpage.css" file or any relevant CSS file */
+
+.comment-box {
+    margin-top: 5px;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.5)
+}
+
+.comment-box p {
+    margin: 0;
+    text-align: left;
+    font-size: 13px;
+    
+}
+
+.comment-box p:first-child {
+    font-style: italic;
+}
+
+.comment-box p.timestamp {
+    font-size: 0.8rem;
+    color: #888;
+}

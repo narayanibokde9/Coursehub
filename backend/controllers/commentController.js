@@ -14,6 +14,7 @@ const addComment = async (req, res) => {
 			user: userId,
 			course: courseId,
 			text: text,
+			postedAt:Date.now(),
 		});
 
 		await newComment.save();
