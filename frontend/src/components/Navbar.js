@@ -52,7 +52,7 @@ const Navbar = () => {
 					</div>
 					<div class="order-2 md:order-3 flex space-x-4">
 						{user && (
-							<div>
+							<div className="btn-group">
 								<Link to="/profile">
 									<span>{user.username} </span>
 								</Link>
@@ -62,7 +62,7 @@ const Navbar = () => {
 							</div>
 						)}
 						{!user && (
-							<div>
+							<div className="btn-group">
 								<Link to="/login">
 									<button className="btn-grad">Login</button>
 								</Link>

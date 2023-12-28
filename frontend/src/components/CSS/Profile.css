@@ -41,8 +41,8 @@ body {
 .card_profile_img {
     width: 120px;
     height: 120px;
-    background-color: #868d9b;
-    /* background: url("./Images/blank1.jpg"); */
+    /* background-color: #868d9b; */
+    background: url("../Images/profile_img.jpeg"); 
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
