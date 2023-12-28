@@ -102,7 +102,7 @@ function FormRow() {
 								</CardActions>
 							</Card>
 						</Item>
-					);
+					); 
 				})}
 			</Grid>
 		</React.Fragment>

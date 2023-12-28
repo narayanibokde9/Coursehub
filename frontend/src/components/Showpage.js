@@ -1,163 +1,170 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./CSS/Showpage.css";
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "./usefetch";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useMemo } from "react";
-import { CardMedia } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 const Showpage = () => {
-	const [ourText, setOurText] = useState("");
-	const [wishlist, setWishlist] = useState([]);
+	const [course, setCourse] = useState({});
+	const [review, setReview] = useState("");
+	const [isPending, setIsPending] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [comments, setComments] = useState([]);
+	const [isLoadingComments, setIsLoadingComments] = useState(true);
 
-	const msg = new SpeechSynthesisUtterance();
-
-	const speechHandler = (msg) => {
-		msg.text = course.description;
-		window.speechSynthesis.speak(msg);
-	};
-
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const { user } = useAuthContext();
 
-	const [course, setCourse] = useState({});
-	const [isLoading, setIsLoading] = useState(true);
-	const [review, setreview] = useState("");
-
-	const [isPending, setIsPending] = useState(false);
-	const navigate = useNavigate();
-
-	console.log(id);
+	// Fetch course details
 	useEffect(() => {
+		console.log(user);
+		
 		fetch(`/courses/showcourse/${id}`)
 			.then((res) => res.json())
 			.then((jsonRes) => {
 				setCourse(jsonRes);
 				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error("Error fetching course details:", error);
+				setIsLoading(false);
 			});
-	}, []);
+	}, [id]);
 
-	console.log(course);
+	// Fetch comments for the specific course
+	useEffect(() => {
+		fetch(`/user/courses/${id}/comments`)
+			.then((res) => res.json())
+			.then((jsonRes) => {
+				setComments(jsonRes.comments);
+				setIsLoadingComments(false);
+			})
+			.catch((error) => {
+				console.error("Error fetching comments:", error);
+				setIsLoadingComments(false);
+			});
+	}, [id]);
 
-	const addToWishList = (course) => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+	const addToWishlist = (course) => {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
 
-    const { id } = course;
+		const { _id } = course;
+		const userId = user._id;
 
-    // Add the course to the wishlist in the backend
-    fetch(`/wishlist`, {
-      method: "POST",
-      body: JSON.stringify({ courseId: id }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((jsonRes) => {
-        // Update the local state with the updated wishlist
-        setWishlist(jsonRes.wishlist);
-        console.log(id + " added to wishlist");
-      })
-      .catch((error) => {
-        console.error("Error adding to wishlist:", error);
-      });
-  };
-	// const handleSubmit = (e) => {
-	// 	if (!user) {
-	// 		navigate("/login");
-	// 		return;
-	// 	}
-	// 	e.preventDefault();
-	// 	const comment = { review };
-	// 	setIsPending(true);
-
-	// 	// fetch(`/courses/comments/${id}/reviews`, {
-	// 	// 	method: "POST",
-	// 	// 	headers: {
-	// 	// 		"Content-Type": "application/json",
-	// 	// 		Authorization: `Bearer ${user.token}`,
-	// 	// 	},
-	// 	// 	body: JSON.stringify(comment),
-	// 	// }).then(() => {
-	// 	// 	console.log("new comment added");
-	// 	// 	setIsPending(false);
-	// 	// 	navigate(`/comments/${id}`);
-	// 	// });
-	// };
+		fetch(`/user/wishlist/add`, {
+			method: "POST",
+			body: JSON.stringify({ userId, courseId: _id }),
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
+		})
+			.then((res) => res.json())
+			.then(() => {
+				console.log(`${_id} added to wishlist`);
+			})
+			.catch((error) => {
+				console.error("Error adding to wishlist:", error);
+			});
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const comment = { review };
+		const comment = { text: review, userId: user._id }; // Pass the user ID with the comment
 		setIsPending(true);
 
-		fetch("http://localhost:8000/comments", {
-			method: "Post",
-			headers: { "Content-Type": "application/json" },
+		fetch(`/user/courses/${id}/comments`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
 			body: JSON.stringify(comment),
-		}).then(() => {
-			console.log("new comment added");
-			setIsPending(false);
-			navigate("/comments");
-		});
+		})
+			.then(() => {
+				console.log("new comment added", comment);
+				setReview(""); // Clear the textarea after adding a comment
+				setIsPending(false);
+				// Fetch comments again to update the displayed comments
+				fetch(`/user/courses/${id}/comments`)
+					.then((res) => res.json())
+					.then((jsonRes) => {
+						setComments(jsonRes.comments);
+					})
+					.catch((error) => {
+						console.error("Error fetching comments:", error);
+					});
+			})
+			.catch((error) => {
+				console.error("Error adding comment:", error);
+				setIsPending(false);
+			});
 	};
 
 	return (
 		<div>
-			<div class="left_wrap">
-				<div className="cont">
-					<h1 class="font-serif text-left">{course.title}</h1>
-					<img src={course.images} />
-					<div className="card1">
-						<h2>{course.instructor}</h2>
-						<h3 class="font-bold">{course.offered_by}</h3>
-						<br />
-						<p>{course.description}</p>
-						<p class="">{course.courseType}</p>
-						<a href={course.course_link}>Course link</a>
-						<button
-							className="btn-grad1"
-							onClick={() => {
-								addToWishList(course);
-							}}
-						>
-							Add To wishlist
-						</button>
+			{isLoading ? (
+				<div className="loading">
+					<CircularProgress />
+					<p>Loading course...</p>
+				</div>
+			) : (
+				<div className="left_wrap">
+					<div className="cont">
+						<h1 className="font-serif text-left">{course.title}</h1>
+						<img src={course.images} alt="Course Thumbnail" />
+						<div className="card1">
+							<h2>{course.instructor}</h2>
+							<h3 className="font-bold">{course.offered_by}</h3>
+							<p>{course.description}</p>
+							<p className="">{course.courseType}</p>
+							<a href={course.course_link}>Course link</a>
+							<button
+								className="btn-grad1"
+								onClick={() => {
+									addToWishlist(course);
+								}}
+							>
+								Add To Wishlist
+							</button>
+						</div>
 					</div>
 				</div>
-				<div className="App1">
-					<h1>Text to Speech!</h1>
-					<div className="textp">
-						<textarea
-							required
-							value={course.description}
-							placeholder="Enter Text"
-							onChange={(e) => setOurText(e.target.value)}
-						></textarea>
-						<br />
-						<button onClick={() => speechHandler(msg)}>SPEAK</button>
-					</div>
-				</div>
-			</div>
+			)}
 
-			<div class="right_wrap">
+			{/* Comments Section */}
+			<div className="right_wrap">
 				<div className="com1">
-					<h2 class="text-left">Comments</h2>
+					<h2 className="text-left">Comments</h2>
 					<form onSubmit={handleSubmit}>
 						<label>Your Review:</label>
 						<textarea
 							required
 							value={review}
-							onChange={(e) => setreview(e.target.value)}
+							onChange={(e) => setReview(e.target.value)}
 						></textarea>
 
 						{!isPending && <button className="btn-grad1">Post</button>}
-						{isPending && <button disabled>Adding Event....</button>}
+						{isPending && <button disabled>Adding Comment....</button>}
 					</form>
+
+					{/* Display previous comments */}
+					{isLoadingComments ? (
+						<p>Loading comments...</p>
+					) : (
+						<ul>
+							{comments.map((comment) => (
+								<li key={comment._id}>
+									<p>{comment.text}</p>
+									{/* Display other details of the comment */}
+								</li>
+							))}
+						</ul>
+					)}
 				</div>
 			</div>
 		</div>
@@ -165,3 +172,5 @@ const Showpage = () => {
 };
 
 export default Showpage;
+
+/**/
