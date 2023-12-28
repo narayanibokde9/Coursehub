@@ -9,6 +9,8 @@ import { CardMedia } from "@mui/material";
 
 const Showpage = () => {
 	const [ourText, setOurText] = useState("");
+	const [wishlist, setWishlist] = useState([]);
+
 	const msg = new SpeechSynthesisUtterance();
 
 	const speechHandler = (msg) => {
@@ -39,24 +41,32 @@ const Showpage = () => {
 	console.log(course);
 
 	const addToWishList = (course) => {
-		if (!user) {
-			navigate("/login");
-			return;
-		}
-		const { id } = course;
-		fetch(`/courses/${id}/wishlist`, {
-			method: "PUT",
-			body: JSON.stringify(course),
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${user.token}`,
-			},
-		}).then(() => {
-			// navigate("/wishlist");
-			console.log(id + "wishlist");
-		});
-	};
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
+    const { id } = course;
+
+    // Add the course to the wishlist in the backend
+    fetch(`/wishlist`, {
+      method: "POST",
+      body: JSON.stringify({ courseId: id }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((jsonRes) => {
+        // Update the local state with the updated wishlist
+        setWishlist(jsonRes.wishlist);
+        console.log(id + " added to wishlist");
+      })
+      .catch((error) => {
+        console.error("Error adding to wishlist:", error);
+      });
+  };
 	// const handleSubmit = (e) => {
 	// 	if (!user) {
 	// 		navigate("/login");

@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
-// import profilePic from "./Images/profile-pic.jpeg";
 import "./CSS/Profile.css";
-
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const Profile = () => {
-	const [wishlist, setWishlist] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const { user } = useAuthContext();
 
-	const { user } = useAuthContext();
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const response = await fetch("/wishlist", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
 
-	useEffect(() => {
-		fetch(`/wishlist`, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${user.token}`,
-			},
-		})
-			.then((res) => res.json())
-			.then((jsonRes) => {
-				setWishlist(jsonRes);
-				// setIsLoading(false);
-			});
-	}, []);
+        if (!response.ok) {
+          throw new Error("Failed to fetch wishlist");
+        }
 
-	console.log(wishlist)
+        const data = await response.json();
+        setWishlist(data);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    fetchWishlist();
+  }, [user]);
+
 
 	return (
 		<div className="profile">
@@ -36,31 +42,17 @@ const Profile = () => {
 				</div>
 				<div class="card_count">
 					<div class="count">
-						<div class="fans">
-							<h3>Courses Subscribed</h3>
-							<br />
-							<p>3</p>
-							<ul>
-								<li>DSA</li>
-								<li>DBMS</li>
-								<li>OS</li>
-							</ul>
-						</div>
-						<div class="following">
-							<h3>Wishlist</h3>
-							<ul>
-								{wishlist.map((wish) => {
-									return <li>{wish.title}</li>;
-								})}
-							</ul>
-							{/* <br />
-							<p>2</p>
-							<ul>
-								<li>CP</li>
-								<li>DMA</li>
-							</ul> */}
-						</div>
-					</div>
+						<div class="count">
+          <div class="following">
+            <h3>Wishlist</h3>
+            <ul>
+              {wishlist.map((wish) => (
+                <li key={wish.id}>{wish.title}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+		</div>
 				</div>
 			</div>
 		</div>
