@@ -52,7 +52,10 @@ const Navbar = () => {
 					</div>
 					<div class="order-2 md:order-3 flex space-x-4">
 						{user && (
-							<div>
+							<div
+								className="btn-group"
+								style={{ display: "flex", alignItems: "center" }}
+							>
 								<Link to="/profile">
 									<span>{user.username} </span>
 								</Link>
@@ -61,8 +64,13 @@ const Navbar = () => {
 								</button>
 							</div>
 						)}
+					</div>
+					<div class="order-2 md:order-3 flex space-x-4">
 						{!user && (
-							<div>
+							<div
+								className="btn-group"
+								style={{ display: "flex", alignItems: "center" }}
+							>
 								<Link to="/login">
 									<button className="btn-grad">Login</button>
 								</Link>

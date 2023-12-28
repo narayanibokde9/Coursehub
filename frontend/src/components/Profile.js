@@ -16,15 +16,20 @@ const Profile = () => {
 			try {
 				if (!user) {
 					navigate("/login");
-					return; 
+					return;
 				}
 
-				const response = await fetch(`/user/wishlist/${user._id}`, {
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${user.token}`,
-					},
-				});
+				const response = await Promise.race([
+					fetch(`/user/wishlist/${user._id}`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${user.token}`,
+						},
+					}),
+					new Promise((_, reject) =>
+						setTimeout(() => reject(new Error("Timeout exceeded")), 5000)
+					),
+				]);
 
 				if (!response.ok) {
 					throw new Error("Failed to fetch wishlist");
@@ -35,11 +40,35 @@ const Profile = () => {
 				setIsLoading(false);
 			} catch (error) {
 				console.error("Error fetching wishlist:", error);
+				setIsLoading(false); // Handle loading completion in case of an error or timeout
 			}
 		};
 
 		fetchWishlist();
 	}, [user]);
+
+	const removeFromWishlist = async (courseId) => {
+		try {
+			const response = await fetch("/wishlist/remove", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${user.token}`,
+				},
+				body: JSON.stringify({ userId: user._id, courseId }),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to remove course from wishlist");
+			}
+
+			setWishlist((prevWishlist) =>
+				prevWishlist.filter((wish) => wish._id !== courseId)
+			);
+		} catch (error) {
+			console.error("Error removing course from wishlist:", error);
+		}
+	};
 
 	return (
 		<div className="profile">
@@ -61,15 +90,28 @@ const Profile = () => {
 										<p>Loading wishlist...</p>
 									</div>
 								) : (
-									<ul>
-										{wishlist.map((wish) => (
-											<div key={wish._id}>
-												<Link to={`/showpage/${wish._id}`}>
-													<Button size="small">{wish.title}</Button>
-												</Link>
-											</div>
-										))}
-									</ul>
+									<div>
+										{wishlist.length === 0 ? (
+											<p>No courses added to wishlist yet!</p>
+										) : (
+											<ul>
+												{wishlist.map((wish) => (
+													<div key={wish._id}>
+														<Link to={`/showpage/${wish._id}`}>
+															<Button size="small">{wish.title}</Button>
+														</Link>
+														<Button
+															size="small"
+															color="error"
+															onClick={() => removeFromWishlist(wish._id)}
+														>
+															Remove
+														</Button>
+													</div>
+												))}
+											</ul>
+										)}
+									</div>
 								)}
 							</div>
 						</div>

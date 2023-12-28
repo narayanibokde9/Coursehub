@@ -31,13 +31,17 @@ const addComment = async (req, res) => {
 const getCommentsByCourseId = async (req, res) => {
 	try {
 		const courseId = req.params.courseId;
-		const comments = await Comment.find({ course: courseId }).populate("user");
-        console.log("get", comments)
+		const comments = await Comment.find({ course: courseId })
+			.populate("user")
+			.sort({ createdAt: -1 }); // Sorting by createdAt field in descending order
+
+		console.log("get", comments);
 		res.json({ comments });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
 };
+
 
 // Get a comment by its ID
 const getCommentById = async (req, res) => {

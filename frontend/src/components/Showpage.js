@@ -5,6 +5,14 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { CircularProgress } from "@mui/material";
 
 const Showpage = () => {
+	const [ourText, setOurText] = useState("");
+	const msg = new SpeechSynthesisUtterance();
+
+	const speechHandler = (msg) => {
+		msg.text = course.description;
+		window.speechSynthesis.speak(msg);
+	};
+
 	const [course, setCourse] = useState({});
 	const [review, setReview] = useState("");
 	const [isPending, setIsPending] = useState(false);
@@ -19,7 +27,7 @@ const Showpage = () => {
 	// Fetch course details
 	useEffect(() => {
 		console.log(user);
-		
+
 		fetch(`/courses/showcourse/${id}`)
 			.then((res) => res.json())
 			.then((jsonRes) => {
@@ -47,9 +55,8 @@ const Showpage = () => {
 	}, [id]);
 
 	function isValidDate(date) {
-  return date instanceof Date && !isNaN(date);
-}
-
+		return date instanceof Date && !isNaN(date);
+	}
 
 	const addToWishlist = (course) => {
 		if (!user) {
@@ -138,6 +145,19 @@ const Showpage = () => {
 							</button>
 						</div>
 					</div>
+					<div className="App1">
+						<h1>Text to Speech!</h1>
+						<div className="textp">
+							<textarea
+								required
+								value={course.description}
+								placeholder="Enter Text"
+								onChange={(e) => setOurText(e.target.value)}
+							></textarea>
+							<br />
+							<button onClick={() => speechHandler(msg)}>SPEAK</button>
+						</div>
+					</div>
 				</div>
 			)}
 
@@ -158,20 +178,33 @@ const Showpage = () => {
 					</form>
 
 					{/* Display previous comments */}
+
 					{isLoadingComments ? (
 						<p>Loading comments...</p>
 					) : (
 						<ul>
-							{comments.map((comment) => (
-								<li key={comment._id}>
-									<div className="comment-box">
-									<p>{comment.text}</p>
-									<p className="timestamp">Posted at: {isValidDate(comment.postedAt) ? new Date(comment.postedAt).toLocaleString() : 'Invalid Date'}</p>
+							{comments.map((comment) => {
+								const parsedDate = new Date(comment.createdAt);
+								const year = parsedDate.getFullYear();
+								const month = parsedDate.getMonth() + 1;
+								const day = parsedDate.getDate();
+								const hours = parsedDate.getHours();
+								const minutes = parsedDate.getMinutes();
+								const seconds = parsedDate.getSeconds();
 
-									{/* Display other details of the comment */}
-									</div>
-								</li>
-							))}
+								return (
+									<li key={comment._id}>
+										<div className="comment-box">
+											<p>{comment.user.username}</p>
+											<p>{comment.text}</p>
+											<p className="timestamp">
+												Posted at:{" "}
+												{`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`}
+											</p>
+										</div>
+									</li>
+								);
+							})}
 						</ul>
 					)}
 				</div>
@@ -180,6 +213,33 @@ const Showpage = () => {
 	);
 };
 
-export default Showpage;
+export default Showpage; /*}
 
-/**/
+/*
+{comments.map((comment) => {
+								// Parse the createdAt date string
+								const parsedDate = new Date(comment.createdAt);
+
+								// Extract desired date components
+								const year = parsedDate.getFullYear();
+								const month = parsedDate.getMonth() + 1;
+								const day = parsedDate.getDate();
+								const hours = parsedDate.getHours();
+								const minutes = parsedDate.getMinutes();
+								const seconds = parsedDate.getSeconds();
+
+								return (
+									<li key={comment._id} className="border-black">
+										<span>{comment.user.username}</span>
+										<p>{comment.text}</p>
+										<p>
+											{/* Display parsed date */ /*
+											Created at:{" "}
+											{${year}-${month}-${day} ${hours}:${minutes}:${seconds}}
+										</p>
+										{/* Display other details of the comment */ /*}
+									</li>
+								);
+							})}
+
+*/
