@@ -117,6 +117,33 @@ const Showpage = () => {
 			});
 	};
 
+	const markCourseAsDone = () => {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+
+		const userId = user._id;
+		const courseId = course._id; // Assuming the course ID is accessible in your component
+
+		fetch("/user/markAsDone", {
+			method: "POST",
+			body: JSON.stringify({ userId, courseId }),
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
+		})
+			.then((res) => res.json())
+			.then(() => {
+				console.log(`${courseId} marked as done`);
+				// You can add logic here to update the UI or do any other action upon successful completion
+			})
+			.catch((error) => {
+				console.error("Error marking course as done:", error);
+			});
+	};
+
 	return (
 		<div>
 			{isLoading ? (
@@ -142,6 +169,9 @@ const Showpage = () => {
 								}}
 							>
 								Add To Wishlist
+							</button>
+							<button className="btn-grad1" onClick={markCourseAsDone}>
+								Course Done?
 							</button>
 						</div>
 					</div>

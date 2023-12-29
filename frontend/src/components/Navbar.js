@@ -45,9 +45,6 @@ const Navbar = () => {
 							<li class="md:px-4 md:py-2 hover:text-indigo-400">
 								<a href="#">About</a>
 							</li>
-							<li class="md:px-4 md:py-2 hover:text-indigo-400">
-								<Link to="/search">Search</Link>
-							</li>
 						</ul>
 					</div>
 					<div class="order-2 md:order-3 flex space-x-4">

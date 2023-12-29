@@ -8,6 +8,7 @@ const courseRoutes = require("./routes/courses");
 const blogRoutes = require("./routes/blogs");
 const wishlistRoutes = require("./routes/wishlists");
 const commentRoutes = require("./routes/comments");
+const coursesDoneRoutes = require("./routes/coursesdone");
 // const commentRoutes = require("./routes/comments");
 
 // const favoriteRoutes = require("./routes/favorites");
@@ -38,6 +39,7 @@ app.use("/courses", courseRoutes);
 app.use("/admin", blogRoutes);
 app.use("/user", wishlistRoutes);
 app.use("/user", commentRoutes);
+app.use("/user", coursesDoneRoutes);
 
 // app.use("/products", productRoutes);
 // app.use("/user", favoriteRoutes);

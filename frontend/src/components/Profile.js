@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
 
 const Profile = () => {
+	const [coursesDone, setCoursesDone] = useState([]);
 	const [wishlist, setWishlist] = useState([]);
 	const { user } = useAuthContext();
 	const [isLoading, setIsLoading] = useState(true);
@@ -43,8 +44,36 @@ const Profile = () => {
 				setIsLoading(false); // Handle loading completion in case of an error or timeout
 			}
 		};
+		const fetchCoursesDone = async () => {
+			try {
+				if (!user) {
+					navigate("/login");
+					return;
+				}
+
+				const response = await fetch(`/user/completedCourses/${user._id}`, {
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${user.token}`,
+					},
+				});
+
+				if (!response.ok) {
+					throw new Error("Failed to fetch courses done");
+				}
+
+				const data = await response.json();
+				setCoursesDone(data);
+				setIsLoading(false);
+			} catch (error) {
+				console.error("Error fetching courses done:", error);
+				setIsLoading(false); // Handle loading completion in case of an error
+			}
+		};
 
 		fetchWishlist();
+		fetchCoursesDone();
+		console.log(coursesDone);
 	}, [user]);
 
 	const removeFromWishlist = async (courseId) => {
@@ -115,6 +144,31 @@ const Profile = () => {
 								)}
 							</div>
 						</div>
+					</div>
+					<div className="">
+						<h3>Courses Done</h3>
+						{isLoading ? (
+							<div className="loading">
+								<CircularProgress />
+								<p>Loading courses done...</p>
+							</div>
+						) : (
+							<div>
+								{coursesDone.length === 0 ? (
+									<p>No courses completed yet!</p>
+								) : (
+									<ul>
+										{coursesDone.map((course) => (
+											<div key={course.course._id}>
+												<Link to={`/showpage/${course.course._id}`}>
+													<Button size="small">{course.course.title}</Button>
+												</Link>
+											</div>
+										))}
+									</ul>
+								)}
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
