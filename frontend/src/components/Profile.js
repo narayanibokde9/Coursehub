@@ -145,7 +145,12 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-					<div className="">
+					<hr className="double-line" />
+					<hr className="double-line" />
+					<br/>
+					<hr className="double-line" />
+					<hr className="double-line" />
+					<div className="course-done">
 						<h3>Courses Done</h3>
 						{isLoading ? (
 							<div className="loading">
